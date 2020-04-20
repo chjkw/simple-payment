@@ -7,6 +7,14 @@ Restful API를 제공하는 간단한 결제 서버
 - Springboot, JUnit
 - H2
 
-## Table 구조
+## DB Schema
 
-## 빌드 방법
+## Build
+~~~
+mvn package
+~~~
+
+## 실행 방법
+~~~
+java -cp target -jar target/payment-01.jar
+~~~
