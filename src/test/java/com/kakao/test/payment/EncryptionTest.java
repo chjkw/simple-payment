@@ -1,17 +1,15 @@
 package com.kakao.test.payment;
 
 import com.kakao.test.payment.service.EncryptionService;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import com.kakao.test.payment.service.EncryptionServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EncryptionTest {
     @Test
     void encryptionTest() {
-        EncryptionService encryptionService = new EncryptionService();
-        encryptionService.init();
+        EncryptionService encryptionService = new EncryptionServiceImpl();
 
         String str = "1234567890123456|363|1225";
         String encStr = encryptionService.encrypt(str);

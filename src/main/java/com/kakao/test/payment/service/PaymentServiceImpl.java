@@ -2,10 +2,13 @@ package com.kakao.test.payment.service;
 
 import com.kakao.test.payment.entity.PaymentEntity;
 import com.kakao.test.payment.model.PaymentModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
+    @Autowired
+    EncryptionService encryptionService;
 
     @Override
     public PaymentEntity makeEntity(PaymentModel model) {
@@ -18,7 +21,8 @@ public class PaymentServiceImpl implements PaymentService {
           .append("|")
           .append(model.getCvc());
 
-        p.setCardinfo(sb.toString());
+        String cardInfo = encryptionService.encrypt(sb.toString());
+        p.setCardinfo(cardInfo);
         p.setAmount(model.getAmount());
 
         p.setVat(model.getVat());
