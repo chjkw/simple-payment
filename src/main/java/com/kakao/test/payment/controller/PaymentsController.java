@@ -3,6 +3,7 @@ package com.kakao.test.payment.controller;
 import com.kakao.test.payment.entity.CancelEntity;
 import com.kakao.test.payment.entity.PaymentEntity;
 import com.kakao.test.payment.model.PaymentModel;
+import com.kakao.test.payment.model.validator.CancelationValidator;
 import com.kakao.test.payment.model.validator.PaymentValidator;
 import com.kakao.test.payment.repository.CancelRepository;
 import com.kakao.test.payment.repository.PaymentRepository;
@@ -33,6 +34,9 @@ public class PaymentsController {
 
     @Autowired
     private PaymentValidator paymentValidator;
+
+    @Autowired
+    private CancelationValidator cancelationValidator;
 
     /**
      * View specific payment by id
@@ -79,9 +83,21 @@ public class PaymentsController {
      * @return
      */
     @Transactional
-    @PostMapping("/api/v1/payments/cancel")
-    public String cancelPayment(@RequestBody CancelEntity param) {
+    @PostMapping(value = "/api/v1/payments/cancel", produces = "application/json;charset=utf-8")
+    public ResponseEntity cancelPayment(@RequestBody @Valid CancelEntity param, Errors errors) {
+        if(errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        cancelationValidator.validate(param, errors);
+
+        if(errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         CancelEntity p = cancelRepository.save(param);
-        return p.getId();
+
+        return ResponseEntity.ok()
+                .body(p.getId());
     }
 }
