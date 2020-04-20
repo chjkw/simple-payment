@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.kakao.test</groupId>
     <artifactId>payment</artifactId>
-    <version>01</version>
+    <version>0.1</version>
     <name>payment</name>
     <description>A simple payment server</description>
 
