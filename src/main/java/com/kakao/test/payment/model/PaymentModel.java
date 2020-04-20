@@ -3,6 +3,7 @@ package com.kakao.test.payment.model;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,4 +16,5 @@ public class PaymentModel implements Serializable {
     private long amount;
     private long vat = -1;
     private boolean isPayment;
+    private LocalDateTime dateTime;
 }

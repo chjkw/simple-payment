@@ -2,8 +2,10 @@ package com.kakao.test.payment.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +31,9 @@ public class CancelEntity {
     @Getter
     @Setter
     private long vat = -1;
+
+    @CreationTimestamp
+    private LocalDateTime dateTime;
 
     public CancelEntity() {
     }

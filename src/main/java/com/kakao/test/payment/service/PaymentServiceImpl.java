@@ -118,6 +118,7 @@ public class PaymentServiceImpl implements PaymentService {
         m.setPlan(p.getPlan());
         m.setAmount(p.getAmount());
         m.setVat(p.getVat());
+        m.setDateTime(p.getDateTime());
 
         return m;
     }

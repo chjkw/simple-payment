@@ -1,9 +1,10 @@
 package com.kakao.test.payment.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +15,8 @@ import java.util.UUID;
 @Setter
 @Table(name = "payment")
 public class PaymentEntity {
+    private static final long serialVersionUID = 810457109758530212L;
+
     @Id
     @Column(length = 20)
     private String id = UUID.randomUUID().toString().replace("-", "").substring(0,20);
@@ -26,5 +29,9 @@ public class PaymentEntity {
 
     @Column(nullable = false)
     private long amount;
+
+    @CreationTimestamp
+    private LocalDateTime dateTime;
+
     private long vat = -1;
 }
