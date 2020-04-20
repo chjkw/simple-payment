@@ -5,4 +5,5 @@ import com.kakao.test.payment.model.PaymentModel;
 
 public interface PaymentService {
     PaymentEntity makeEntity(PaymentModel model);
+    PaymentModel makeModel(PaymentEntity entity);
 }

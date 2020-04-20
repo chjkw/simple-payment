@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class PaymentModel implements Serializable {
+    private String id;
     private String cardnum;
     private short cvc;
     private short exp;

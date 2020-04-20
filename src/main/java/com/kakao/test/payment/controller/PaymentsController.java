@@ -44,10 +44,18 @@ public class PaymentsController {
      * @param id
      * @return
      */
-    @Transactional
     @GetMapping("/api/v1/payments/{id}")
-    public PaymentEntity getDetail(@PathVariable String id) {
-        return paymentRepository.findById(id).get();
+    @ResponseBody
+    public ResponseEntity getDetail(@PathVariable("id") String id) {
+        if(!paymentRepository.existsById(id)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        PaymentEntity p = paymentRepository.findById(id).get();
+        PaymentModel m = paymentService.makeModel(p);
+
+        return ResponseEntity.ok()
+                .body(m);
     }
 
     /**
