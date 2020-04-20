@@ -5,8 +5,6 @@ import com.kakao.test.payment.entity.PaymentEntity;
 import com.kakao.test.payment.model.PaymentModel;
 import com.kakao.test.payment.model.validator.CancelationValidator;
 import com.kakao.test.payment.model.validator.PaymentValidator;
-import com.kakao.test.payment.repository.CancelRepository;
-import com.kakao.test.payment.repository.PaymentRepository;
 import com.kakao.test.payment.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +21,6 @@ import javax.validation.Valid;
  */
 @RestController
 public class PaymentsController {
-    @Autowired
-    private PaymentRepository paymentRepository;
-
-    @Autowired
-    private CancelRepository cancelRepository;
-
     @Autowired
     private PaymentService paymentService;
 
@@ -47,15 +39,11 @@ public class PaymentsController {
     @GetMapping("/api/v1/payments/{id}")
     @ResponseBody
     public ResponseEntity getDetail(@PathVariable("id") String id) {
-        if(!paymentRepository.existsById(id)) {
+        if(!paymentService.existsById(id))
             return ResponseEntity.badRequest().build();
-        }
 
-        PaymentEntity p = paymentRepository.findById(id).get();
-        PaymentModel m = paymentService.makeModel(p);
-
-        return ResponseEntity.ok()
-                .body(m);
+        PaymentModel m = paymentService.getModelById(id);
+        return ResponseEntity.ok().body(m);
     }
 
     /**
@@ -67,21 +55,11 @@ public class PaymentsController {
     @Transactional
     @PostMapping(value = "/api/v1/payments", produces = "application/json;charset=utf-8")
     public ResponseEntity addPayment(@RequestBody @Valid PaymentModel param, Errors errors) {
-        if(errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(errors);
-        }
-
         paymentValidator.validate(param, errors);
+        if(errors.hasErrors()) return ResponseEntity.badRequest().body(errors);
 
-        if(errors.hasErrors()){
-            return ResponseEntity.badRequest().body(errors);
-        }
-
-        PaymentEntity data = paymentService.makeEntity(param);
-        PaymentEntity p = paymentRepository.save(data);
-
-        return ResponseEntity.ok()
-                .body(p.getId());
+        PaymentEntity p = paymentService.addPayment(param);
+        return ResponseEntity.ok().body(p.getId());
     }
 
     /**
@@ -93,19 +71,10 @@ public class PaymentsController {
     @Transactional
     @PostMapping(value = "/api/v1/payments/cancel", produces = "application/json;charset=utf-8")
     public ResponseEntity cancelPayment(@RequestBody @Valid CancelEntity param, Errors errors) {
-        if(errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(errors);
-        }
-
         cancelationValidator.validate(param, errors);
+        if(errors.hasErrors()) return ResponseEntity.badRequest().body(errors);
 
-        if(errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(errors);
-        }
-
-        CancelEntity p = cancelRepository.save(param);
-
-        return ResponseEntity.ok()
-                .body(p.getId());
+        CancelEntity p = paymentService.addCancellation(param);
+        return ResponseEntity.ok().body(p.getId());
     }
 }
