@@ -28,7 +28,7 @@ public class CancelEntity {
 
     @Getter
     @Setter
-    private long vat;
+    private long vat = -1;
 
     public CancelEntity() {
     }

@@ -26,5 +26,5 @@ public class PaymentEntity {
 
     @Column(nullable = false)
     private long amount;
-    private long vat;
+    private long vat = -1;
 }

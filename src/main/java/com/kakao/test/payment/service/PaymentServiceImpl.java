@@ -86,7 +86,11 @@ public class PaymentServiceImpl implements PaymentService {
         p.setCardinfo(cardInfo);
         p.setAmount(model.getAmount());
 
-        p.setVat(model.getVat());
+        if(model.getVat() == -1)
+            p.setVat( Math.round((double)model.getAmount() / 11.0));
+        else
+            p.setVat(model.getVat());
+
         p.setPlan(model.getPlan());
 
         return p;
