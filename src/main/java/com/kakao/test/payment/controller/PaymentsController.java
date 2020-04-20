@@ -59,7 +59,7 @@ public class PaymentsController {
         if(errors.hasErrors()) return ResponseEntity.badRequest().body(errors);
 
         PaymentEntity p = paymentService.addPayment(param);
-        return ResponseEntity.ok().body(p.getId());
+        return ResponseEntity.ok().body(p);
     }
 
     /**
@@ -75,6 +75,6 @@ public class PaymentsController {
         if(errors.hasErrors()) return ResponseEntity.badRequest().body(errors);
 
         CancelEntity p = paymentService.addCancellation(param);
-        return ResponseEntity.ok().body(p.getId());
+        return ResponseEntity.ok().body(p);
     }
 }
