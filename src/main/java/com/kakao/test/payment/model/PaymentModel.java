@@ -14,4 +14,5 @@ public class PaymentModel implements Serializable {
     private short plan;
     private long amount;
     private long vat;
+    private boolean isPayment;
 }

@@ -2,9 +2,11 @@ package com.kakao.test.payment.service;
 
 import com.kakao.test.payment.entity.CancelEntity;
 import com.kakao.test.payment.entity.PaymentEntity;
+import com.kakao.test.payment.entity.TypesEntity;
 import com.kakao.test.payment.model.PaymentModel;
 import com.kakao.test.payment.repository.CancelRepository;
 import com.kakao.test.payment.repository.PaymentRepository;
+import com.kakao.test.payment.repository.TypesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,26 +21,55 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private CancelRepository cancelRepository;
 
+    @Autowired
+    private TypesRepository typesRepository;
+
     @Override
     public boolean existsById(String id) {
-        return paymentRepository.existsById(id);
+        return typesRepository.existsByUid(id);
     }
 
     @Override
     public PaymentEntity addPayment(PaymentModel model) {
         PaymentEntity p = makeEntity(model);
-        return paymentRepository.save(p);
+        p = paymentRepository.save(p);
+
+        TypesEntity t = new TypesEntity();
+        t.setUid(p.getId());
+        t.setPayment(true);
+        typesRepository.save(t);
+
+        return p;
     }
 
     @Override
     public CancelEntity addCancellation(CancelEntity entity) {
-        return cancelRepository.save(entity);
+        CancelEntity c = cancelRepository.save(entity);
+
+        TypesEntity t = new TypesEntity();
+        t.setUid(c.getId());
+        t.setPayment(false);
+        typesRepository.save(t);
+        return c;
     }
 
     @Override
     public PaymentModel getModelById(String id) {
-        PaymentEntity p = paymentRepository.findById(id).get();
-        return makeModel(p);
+        TypesEntity t = typesRepository.findByUid(id);
+
+        PaymentEntity p;
+        CancelEntity c;
+        if(t.isPayment()) {
+            p = paymentRepository.findById(id).get();
+        } else {
+            c = cancelRepository.findById(id).get();
+            p = paymentRepository.findById(c.getPaymentId()).get();
+        }
+
+        PaymentModel m = makeModel(p);
+        m.setPayment(t.isPayment());
+
+        return m;
     }
 
     public PaymentEntity makeEntity(PaymentModel model) {
