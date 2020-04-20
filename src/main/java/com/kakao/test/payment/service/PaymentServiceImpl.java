@@ -72,7 +72,7 @@ public class PaymentServiceImpl implements PaymentService {
         return m;
     }
 
-    public PaymentEntity makeEntity(PaymentModel model) {
+    private PaymentEntity makeEntity(PaymentModel model) {
         PaymentEntity p = new PaymentEntity();
 
         StringBuilder sb = new StringBuilder();
@@ -96,7 +96,7 @@ public class PaymentServiceImpl implements PaymentService {
         return p;
     }
 
-    public PaymentModel makeModel(PaymentEntity p) {
+    private PaymentModel makeModel(PaymentEntity p) {
         PaymentModel m = new PaymentModel();
 
         String cardInfo = encryptionService.decrypt(p.getCardinfo());
@@ -105,7 +105,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         StringBuilder cardNum = new StringBuilder(cardInfos[0]);
         // hide some numbers
-        for(int i = 7; i < cardNum.length() - 3; i++)
+        for (int i = 7; i < cardNum.length() - 3; i++)
             cardNum.setCharAt(i, '*');
 
         String exp = cardInfos[1];
