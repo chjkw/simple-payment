@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "cancels")
@@ -13,12 +14,11 @@ public class CancelEntity {
     @Id
     @Getter
     @Column(length = 20)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private String id = UUID.randomUUID().toString().replace("-", "").substring(0,20);
 
     @Getter
     @Setter
-    @Column(nullable = false, name = "payment_id")
+    @Column(nullable = false)
     private String paymentId;
 
     @Getter

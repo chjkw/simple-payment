@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Builder
@@ -15,8 +16,8 @@ import java.io.Serializable;
 public class PaymentEntity {
     @Id
     @Column(length = 20)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private String id = UUID.randomUUID().toString().replace("-", "").substring(0,20);
+
     @Column(nullable = false)
     private String cardinfo;
 
