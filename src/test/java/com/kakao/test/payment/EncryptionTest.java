@@ -1,7 +1,7 @@
 package com.kakao.test.payment;
 
 import com.kakao.test.payment.service.EncryptionService;
-import com.kakao.test.payment.service.EncryptionServiceImpl;
+import com.kakao.test.payment.service.impl.EncryptionServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

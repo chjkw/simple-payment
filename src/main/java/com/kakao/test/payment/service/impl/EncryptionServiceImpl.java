@@ -1,5 +1,6 @@
-package com.kakao.test.payment.service;
+package com.kakao.test.payment.service.impl;
 
+import com.kakao.test.payment.service.EncryptionService;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.stereotype.Service;
 

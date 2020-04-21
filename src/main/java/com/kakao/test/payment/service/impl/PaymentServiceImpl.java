@@ -1,4 +1,4 @@
-package com.kakao.test.payment.service;
+package com.kakao.test.payment.service.impl;
 
 import com.kakao.test.payment.entity.CancelEntity;
 import com.kakao.test.payment.entity.PaymentEntity;
@@ -7,6 +7,8 @@ import com.kakao.test.payment.model.PaymentModel;
 import com.kakao.test.payment.repository.CancelRepository;
 import com.kakao.test.payment.repository.PaymentRepository;
 import com.kakao.test.payment.repository.TypesRepository;
+import com.kakao.test.payment.service.EncryptionService;
+import com.kakao.test.payment.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
