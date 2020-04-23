@@ -14,13 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
     @Autowired
-    EncryptionService encryptionService;
+    private EncryptionService encryptionService;
 
     @Autowired
-    PaymentRepository paymentRepository;
+    private PaymentRepository paymentRepository;
 
     @Autowired
-    ApprovalRepository approvalRepository;
+    private ApprovalRepository approvalRepository;
 
     @Transactional
     @Override

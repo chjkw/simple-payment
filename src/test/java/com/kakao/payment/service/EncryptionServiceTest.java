@@ -1,12 +1,11 @@
-package com.kakao.payment;
+package com.kakao.payment.service;
 
-import com.kakao.payment.service.EncryptionService;
 import com.kakao.payment.service.impl.EncryptionServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EncryptionTest {
+public class EncryptionServiceTest {
     @Test
     void encryptionTest() {
         EncryptionService encryptionService = new EncryptionServiceImpl();

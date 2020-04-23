@@ -5,7 +5,6 @@ import com.kakao.payment.entity.ApprovalEntity;
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
 import com.kakao.payment.helper.TestHelper;
-import com.kakao.payment.model.PaymentModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,8 +62,5 @@ public class ApprovalServiceTest extends AbstractTest {
 
         ApprovalEntity approvalEntity = approvalService.saveApprovalStr(paymentEntity, cancelEntity);
         assertEquals(approvalEntity.getApproval(), approvalStr);
-
     }
-
-
 }

@@ -1,5 +1,6 @@
-package com.kakao.payment;
+package com.kakao.payment.web.controller;
 
+import com.kakao.payment.AbstractTest;
 import com.kakao.payment.helper.TestHelper;
 import com.kakao.payment.service.PaymentService;
 import com.kakao.payment.entity.CancelEntity;
@@ -19,12 +20,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @WebAppConfiguration
-public class PaymentApiTest extends AbstractTest {
+public class PaymentsControllerTest extends AbstractTest {
     @Autowired
-    PaymentService paymentService;
+    private PaymentService paymentService;
 
     @Autowired
-    TestHelper testHelper;
+    private TestHelper testHelper;
 
     @BeforeEach
     public void init() {
@@ -73,6 +74,4 @@ public class PaymentApiTest extends AbstractTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
-
-
 }

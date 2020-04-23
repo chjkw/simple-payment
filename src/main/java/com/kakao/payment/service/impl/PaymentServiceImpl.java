@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
-    EncryptionService encryptionService;
+    private EncryptionService encryptionService;
 
     @Autowired
     private PaymentRepository paymentRepository;

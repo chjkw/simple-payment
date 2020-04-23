@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EncryptionServiceImpl implements EncryptionService {
-    StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+    private final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 
     public EncryptionServiceImpl() {
         encryptor.setPassword("somePassword");

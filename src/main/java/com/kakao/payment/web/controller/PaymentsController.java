@@ -1,4 +1,4 @@
-package com.kakao.payment.controller;
+package com.kakao.payment.web.controller;
 
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
