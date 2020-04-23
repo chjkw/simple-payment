@@ -24,7 +24,13 @@ spring:
       settings:
         trace: false
         web-allow-others: false
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
 
 server:
   port: 8080
-  locale: UTF-8
+
+
