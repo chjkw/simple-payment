@@ -1,12 +1,9 @@
 package com.kakao.payment.model;
 
-import com.kakao.payment.service.EncryptionService;
-import com.kakao.payment.service.impl.EncryptionServiceImpl;
+import com.kakao.payment.common.EncryptionUtil;
 import lombok.Getter;
 
 public class CardInfoModel {
-    private final EncryptionService encryptionService = new EncryptionServiceImpl();
-
     @Getter
     private final String cardNum;
     @Getter
@@ -21,7 +18,7 @@ public class CardInfoModel {
     }
 
     public CardInfoModel(String cardInfoStr) {
-        String cardInfo = encryptionService.decrypt(cardInfoStr);
+        String cardInfo = EncryptionUtil.decrypt(cardInfoStr);
         String[] cardInfos = cardInfo.split("[|]");
 
         this.cardNum = cardInfos[0];
@@ -37,7 +34,7 @@ public class CardInfoModel {
                 .append("|")
                 .append(this.cvc);
 
-        return encryptionService.encrypt(sb.toString());
+        return EncryptionUtil.encrypt(sb.toString());
     }
 
     public String getEncCardNum() {
