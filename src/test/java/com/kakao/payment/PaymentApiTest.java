@@ -1,9 +1,10 @@
-package com.kakao.test.payment;
+package com.kakao.payment;
 
-import com.kakao.test.payment.entity.CancelEntity;
-import com.kakao.test.payment.entity.PaymentEntity;
-import com.kakao.test.payment.model.PaymentModel;
-import com.kakao.test.payment.service.PaymentService;
+import com.kakao.payment.helper.TestHelper;
+import com.kakao.payment.service.PaymentService;
+import com.kakao.payment.entity.CancelEntity;
+import com.kakao.payment.entity.PaymentEntity;
+import com.kakao.payment.model.PaymentModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class PaymentApiTest extends AbstractTest {
     @Autowired
     PaymentService paymentService;
 
+    @Autowired
+    TestHelper testHelper;
+
     @BeforeEach
     public void init() {
         setUp();
@@ -29,7 +33,7 @@ public class PaymentApiTest extends AbstractTest {
 
     @Test
     public void addPaymentSuccess() throws  Exception {
-        PaymentModel payment = makeSamplePayment();
+        PaymentModel payment = testHelper.makeSamplePaymentModel();
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/payments")
@@ -43,10 +47,10 @@ public class PaymentApiTest extends AbstractTest {
 
     @Test
     public void cancelPaymentSuccess() throws Exception {
-        PaymentModel paymentModel = makeSamplePayment();
+        PaymentModel paymentModel = testHelper.makeSamplePaymentModel();
         PaymentEntity p = paymentService.addPayment(paymentModel);
 
-        CancelEntity cancelEntity = makeSampleCancel(p.getId());
+        CancelEntity cancelEntity = testHelper.makeSampleCancelEntity(p.getId());
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/v1/payments/cancel")
@@ -59,7 +63,7 @@ public class PaymentApiTest extends AbstractTest {
 
     @Test
     public void addPaymentFail() throws  Exception {
-        PaymentModel payment = makeSamplePayment();
+        PaymentModel payment = testHelper.makeSamplePaymentModel();
         payment.setCardnum("1234567890123456q"); // bad card number
 
         mvc.perform(
@@ -70,23 +74,5 @@ public class PaymentApiTest extends AbstractTest {
                 .andExpect(status().isBadRequest());
     }
 
-    private PaymentModel  makeSamplePayment() {
-        PaymentModel payment = new PaymentModel();
-        payment.setAmount(1000);
-        payment.setCardnum("1234567890123456");
-        payment.setCvc((short)363);
-        payment.setExp((short)1224);
-        payment.setPlan((short)0);
-        payment.setVat(0);
 
-        return payment;
-    }
-
-    private CancelEntity makeSampleCancel(String paymentId) {
-        CancelEntity cancelEntity = new CancelEntity();
-        cancelEntity.setAmount(1000);
-        cancelEntity.setPaymentId(paymentId);
-        cancelEntity.setVat(0);
-        return cancelEntity;
-    }
 }

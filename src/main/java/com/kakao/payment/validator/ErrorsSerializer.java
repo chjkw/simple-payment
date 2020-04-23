@@ -1,4 +1,4 @@
-package com.kakao.test.payment.model.validator;
+package com.kakao.payment.validator;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

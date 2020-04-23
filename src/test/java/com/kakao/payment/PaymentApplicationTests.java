@@ -1,4 +1,4 @@
-package com.kakao.test.payment;
+package com.kakao.payment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

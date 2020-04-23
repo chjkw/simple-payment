@@ -1,6 +1,6 @@
-package com.kakao.test.payment.model.validator;
+package com.kakao.payment.validator;
 
-import com.kakao.test.payment.model.PaymentModel;
+import com.kakao.payment.model.PaymentModel;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 

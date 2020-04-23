@@ -1,17 +1,16 @@
-package com.kakao.test.payment.controller;
+package com.kakao.payment.controller;
 
-import com.kakao.test.payment.entity.CancelEntity;
-import com.kakao.test.payment.entity.PaymentEntity;
-import com.kakao.test.payment.model.PaymentModel;
-import com.kakao.test.payment.model.validator.CancelationValidator;
-import com.kakao.test.payment.model.validator.PaymentValidator;
-import com.kakao.test.payment.service.PaymentService;
+import com.kakao.payment.entity.CancelEntity;
+import com.kakao.payment.entity.PaymentEntity;
+import com.kakao.payment.model.PaymentModel;
+import com.kakao.payment.validator.CancelationValidator;
+import com.kakao.payment.validator.PaymentValidator;
+import com.kakao.payment.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 /**
@@ -52,7 +51,6 @@ public class PaymentsController {
      * @param param
      * @return
      */
-    @Transactional
     @PostMapping(value = "/api/v1/payments", produces = "application/json;charset=utf-8")
     public ResponseEntity addPayment(@RequestBody @Valid PaymentModel param, Errors errors) {
         paymentValidator.validate(param, errors);
@@ -68,7 +66,6 @@ public class PaymentsController {
      * @param param
      * @return
      */
-    @Transactional
     @PostMapping(value = "/api/v1/payments/cancel", produces = "application/json;charset=utf-8")
     public ResponseEntity cancelPayment(@RequestBody @Valid CancelEntity param, Errors errors) {
         cancelationValidator.validate(param, errors);

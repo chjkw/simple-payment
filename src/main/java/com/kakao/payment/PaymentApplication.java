@@ -1,4 +1,4 @@
-package com.kakao.test.payment;
+package com.kakao.payment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

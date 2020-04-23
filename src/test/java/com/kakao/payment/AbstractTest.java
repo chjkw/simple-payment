@@ -1,4 +1,4 @@
-package com.kakao.test.payment;
+package com.kakao.payment;
 
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
-package com.kakao.test.payment.model.validator;
+package com.kakao.payment.validator;
 
-import com.kakao.test.payment.entity.CancelEntity;
-import com.kakao.test.payment.entity.PaymentEntity;
-import com.kakao.test.payment.repository.CancelRepository;
-import com.kakao.test.payment.repository.PaymentRepository;
+import com.kakao.payment.entity.PaymentEntity;
+import com.kakao.payment.repository.PaymentRepository;
+import com.kakao.payment.entity.CancelEntity;
+import com.kakao.payment.repository.CancelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

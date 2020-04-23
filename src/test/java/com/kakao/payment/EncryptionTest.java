@@ -1,8 +1,7 @@
-package com.kakao.test.payment;
+package com.kakao.payment;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.kakao.test.payment.service.EncryptionService;
-import com.kakao.test.payment.service.impl.EncryptionServiceImpl;
+import com.kakao.payment.service.EncryptionService;
+import com.kakao.payment.service.impl.EncryptionServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
