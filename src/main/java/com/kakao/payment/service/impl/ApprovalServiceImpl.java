@@ -39,8 +39,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 
         StringBuilder sb = new StringBuilder();
 
-        String id = "";
-        String paymentId = "";
+        String id;
+        String paymentId;
         String paymentStr;
         String amount;
         String vat;
