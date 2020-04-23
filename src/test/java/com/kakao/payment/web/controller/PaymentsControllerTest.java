@@ -128,6 +128,14 @@ public class PaymentsControllerTest extends AbstractTest {
     }
 
     @Test
+    public void getPaymentFail() throws Exception {
+        mvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/payments/dap30uduejejfhgydydy")
+                    .contentType(MediaType.APPLICATION_JSON_VALUE))
+                    .andExpect(status().isNotFound());
+    }
+
+    @Test
     void partialCancellationTest_1() throws Exception {
         PaymentModel payment = testHelper.makeSamplePaymentModel();
         payment.setAmount(11000);
