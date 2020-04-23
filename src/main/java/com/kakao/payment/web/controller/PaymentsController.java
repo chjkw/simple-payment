@@ -42,7 +42,7 @@ public class PaymentsController {
     @ResponseBody
     public ResponseEntity getDetail(@PathVariable("id") String id) {
         if(!paymentService.existsById(id))
-            return ResponseEntity.badRequest().body("{}");
+            return ResponseEntity.notFound().build();
 
         PaymentModel m = paymentService.getModelById(id);
         return ResponseEntity.ok().body(m);

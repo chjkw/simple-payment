@@ -116,7 +116,6 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    @Transactional
     public PaymentModel getModelById(String id) {
         TypesEntity t = typesRepository.findByUid(id);
 
