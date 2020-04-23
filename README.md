@@ -133,5 +133,5 @@ mvn package
 
 ## 실행 방법
 ~~~
-java -cp target -jar target/payment-01.jar
+java -cp target -jar target/payment-0.1.jar
 ~~~
