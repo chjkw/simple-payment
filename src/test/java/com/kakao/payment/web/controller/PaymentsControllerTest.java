@@ -40,7 +40,9 @@ public class PaymentsControllerTest extends AbstractTest {
                 MockMvcRequestBuilders.post("/api/v1/payments")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(mapToJson(payment)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.dateTime").exists());
     }
 
     @Test
@@ -67,7 +69,9 @@ public class PaymentsControllerTest extends AbstractTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(mapToJson(cancelEntity)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.amount").value(cancelEntity.getAmount()));
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.remainAmount").exists())
+                .andExpect(jsonPath("$.remainVat").exists());
     }
 
 
