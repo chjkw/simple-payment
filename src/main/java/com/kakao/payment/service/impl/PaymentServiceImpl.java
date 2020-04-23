@@ -1,8 +1,8 @@
 package com.kakao.payment.service.impl;
 
 import com.kakao.payment.entity.TypesEntity;
+import com.kakao.payment.model.CardInfoModel;
 import com.kakao.payment.repository.TypesRepository;
-import com.kakao.payment.service.EncryptionService;
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
 import com.kakao.payment.model.PaymentModel;
@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
-    @Autowired
-    private EncryptionService encryptionService;
-
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -91,15 +88,9 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentEntity makeEntity(PaymentModel model) {
         PaymentEntity p = new PaymentEntity();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(model.getCardnum())
-          .append("|")
-          .append(model.getExp())
-          .append("|")
-          .append(model.getCvc());
+        CardInfoModel cardInfo = new CardInfoModel(model.getCardnum(), model.getExp(), model.getCvc());
 
-        String cardInfo = encryptionService.encrypt(sb.toString());
-        p.setCardinfo(cardInfo);
+        p.setCardinfo(cardInfo.getEncStr());
         p.setAmount(model.getAmount());
 
         if(model.getVat() == -1)
@@ -115,22 +106,12 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentModel makeModel(PaymentEntity p) {
         PaymentModel m = new PaymentModel();
 
-        String cardInfo = encryptionService.decrypt(p.getCardinfo());
-
-        String[] cardInfos = cardInfo.split("[|]");
-
-        StringBuilder cardNum = new StringBuilder(cardInfos[0]);
-        // hide some numbers
-        for (int i = 7; i < cardNum.length() - 3; i++)
-            cardNum.setCharAt(i, '*');
-
-        String exp = cardInfos[1];
-        String cvc = cardInfos[2];
+        CardInfoModel cardInfoModel = new CardInfoModel(p.getCardinfo());
 
         m.setId(p.getId());
-        m.setCardnum(cardNum.toString());
-        m.setExp(Short.parseShort(exp));
-        m.setCvc(Short.parseShort(cvc));
+        m.setCardnum(cardInfoModel.getEncCardNum());
+        m.setExp(Short.parseShort(cardInfoModel.getExp()));
+        m.setCvc(Short.parseShort(cardInfoModel.getCvc()));
         m.setPlan(p.getPlan());
         m.setAmount(p.getAmount());
         m.setVat(p.getVat());

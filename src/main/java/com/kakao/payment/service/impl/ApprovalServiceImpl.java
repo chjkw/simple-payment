@@ -3,9 +3,9 @@ package com.kakao.payment.service.impl;
 import com.kakao.payment.entity.ApprovalEntity;
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
+import com.kakao.payment.model.CardInfoModel;
 import com.kakao.payment.repository.ApprovalRepository;
 import com.kakao.payment.repository.PaymentRepository;
-import com.kakao.payment.service.EncryptionService;
 import com.kakao.payment.service.ApprovalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
-    @Autowired
-    private EncryptionService encryptionService;
-
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -62,19 +59,18 @@ public class ApprovalServiceImpl implements ApprovalService {
             vat = String.format("%10d",  cancel.getVat());
         }
 
-        String cardInfo = encryptionService.decrypt(payment.getCardinfo());
-        String[] cardInfoArr = cardInfo.split("[|]");
+        CardInfoModel cardInfo = new CardInfoModel(payment.getCardinfo());
 
-        String cardnum = String.format("%-20s",  cardInfoArr[0]);
+        String cardNum = String.format("%-20s",  cardInfo.getCardNum());
         String plan = String.format("%02d", payment.getPlan());
-        String exp = String.format("%-4s", cardInfoArr[1]);
-        String cvc = String.format("%-3s", cardInfoArr[2]);
+        String exp = String.format("%-4s", cardInfo.getExp());
+        String cvc = String.format("%-3s", cardInfo.getCvc());
 
         String cardInfoEnc = String.format("%-300s", payment.getCardinfo());
 
         sb.append(paymentStr)
                 .append(id)
-                .append(cardnum)
+                .append(cardNum)
                 .append(plan)
                 .append(exp)
                 .append(cvc)
