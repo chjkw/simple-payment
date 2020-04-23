@@ -48,11 +48,11 @@
 ```javascript
 [
     {
-        "field": "cardnum",
-        "objectName": "paymentModel",
+        "field": "amount",
+        "objectName": "cancelEntity",
         "code": "WrongValue",
-        "defaultMessage": "카드 번호가 너무 깁니다.",
-        "rejectedValue": "1234567890123456aa"
+        "defaultMessage": "입력 값이 잘못되었습니다.",
+        "rejectedValue": "1000000000"
     }
 ]
 ```
