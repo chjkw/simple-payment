@@ -5,9 +5,10 @@ import com.kakao.payment.entity.PaymentEntity;
 import com.kakao.payment.model.PaymentModel;
 
 public interface PaymentService {
-    PaymentModel getModelById(String id);
-    PaymentEntity addPayment(PaymentModel model);
-    boolean existsById(String id);
 
+    boolean existsById(String id);
+    PaymentModel getModelById(String id);
+
+    PaymentEntity addPayment(PaymentModel model);
     CancelEntity addCancellation(CancelEntity entity);
 }

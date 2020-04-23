@@ -38,6 +38,14 @@ public class CancelEntity {
     @CreationTimestamp
     private LocalDateTime dateTime;
 
+    @Getter
+    @Setter
+    private long remainAmount;
+
+    @Getter
+    @Setter
+    private long remainVat;
+
     public CancelEntity() {
     }
 }

@@ -30,5 +30,9 @@ public class PaymentValidator {
         if(paymentModel.getAmount() < 100 || paymentModel.getAmount() > 1000000000) {
             errors.rejectValue("amount", "WrongValue", "100-1억 사이의 숫자가 아닙니다.");
         }
+
+        if(paymentModel.getAmount() < paymentModel.getVat()) {
+            errors.rejectValue("vat", "WrongValue", "vat는 amount보다 작아야 합니다.");
+        }
     }
 }

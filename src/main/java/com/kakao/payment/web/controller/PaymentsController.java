@@ -71,7 +71,12 @@ public class PaymentsController {
         cancelationValidator.validate(param, errors);
         if(errors.hasErrors()) return ResponseEntity.badRequest().body(errors);
 
-        CancelEntity p = paymentService.addCancellation(param);
-        return ResponseEntity.ok().body(p);
+        CancelEntity c = paymentService.addCancellation(param);
+        if(c == null) {
+            errors.rejectValue("amount", "WrongValue", "입력 값이 잘못되었습니다.");
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        return ResponseEntity.ok().body(c);
     }
 }

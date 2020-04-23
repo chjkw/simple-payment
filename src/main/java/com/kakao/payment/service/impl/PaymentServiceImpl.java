@@ -37,6 +37,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public PaymentEntity addPayment(PaymentModel model) {
         PaymentEntity p = makeEntity(model);
+
+        if(p.getVat() == -1)
+            p.setVat( Math.round((double)model.getAmount() / 11.0));
+        else
+            p.setVat(model.getVat());
+
         p = paymentRepository.save(p);
 
         TypesEntity t = new TypesEntity();
@@ -53,16 +59,54 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public CancelEntity addCancellation(CancelEntity entity) {
-        CancelEntity c = cancelRepository.save(entity);
+        final String paymentId = entity.getPaymentId();
+
+        //결재 번호 없음
+        if(!paymentRepository.existsById(paymentId)) {
+            return null;
+        }
+
+        PaymentEntity p = paymentRepository.findById(paymentId).get();
+
+        long remainAmount = p.getAmount();
+        long remainVat = p.getVat();
+
+        // 이미 취소된 적이 있으면 부분 취소 시도
+        if(cancelRepository.existsByPaymentId(paymentId)) {
+            CancelEntity c = cancelRepository.findFirstByPaymentIdOrderByDateTimeDesc(paymentId);
+
+            remainAmount = c.getRemainAmount();
+            remainVat = c.getRemainVat();
+        }
+
+        if (remainAmount == 0 && remainVat == 0) return null;
+
+        long currentRemainAmount = remainAmount - entity.getAmount();
+
+        if(entity.getVat() == -1) {
+            if(currentRemainAmount == 0) entity.setVat(remainVat);
+            else entity.setVat( Math.round((double)entity.getAmount() / 11.0));
+        }
+
+        long currentRemainVat = remainVat - entity.getVat();
+
+        if (currentRemainAmount < 0) return null;
+        if (currentRemainVat < 0) return null;
+        if (currentRemainAmount < currentRemainVat) return null;
+
+        entity.setRemainAmount(currentRemainAmount);
+        entity.setRemainVat(currentRemainVat);
+
+        CancelEntity savedCancelEntity = cancelRepository.save(entity);
 
         TypesEntity t = new TypesEntity();
-        t.setUid(c.getId());
+        t.setUid(savedCancelEntity.getId());
         t.setPayment(false);
         typesRepository.save(t);
 
         // 카드사 전달
-        approvalService.saveApprovalStr(null, c);
-        return c;
+        approvalService.saveApprovalStr(p, savedCancelEntity);
+        return savedCancelEntity;
     }
 
     @Override
@@ -92,12 +136,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         p.setCardinfo(cardInfo.getEncStr());
         p.setAmount(model.getAmount());
-
-        if(model.getVat() == -1)
-            p.setVat( Math.round((double)model.getAmount() / 11.0));
-        else
-            p.setVat(model.getVat());
-
+        p.setVat(model.getVat());
         p.setPlan(model.getPlan());
 
         return p;
