@@ -1,6 +1,5 @@
 package com.kakao.payment.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.payment.AbstractTest;
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
@@ -27,9 +26,6 @@ public class PaymentsControllerTest extends AbstractTest {
 
     @Autowired
     private TestHelper testHelper;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void init() {
@@ -141,7 +137,7 @@ public class PaymentsControllerTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        PaymentEntity paymentEntity = objectMapper.readValue(resultStr, PaymentEntity.class);
+        PaymentEntity paymentEntity = mapFromJson(resultStr, PaymentEntity.class);
 
         String paymentId = paymentEntity.getId();
 
@@ -187,7 +183,7 @@ public class PaymentsControllerTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        PaymentEntity paymentEntity = objectMapper.readValue(resultStr, PaymentEntity.class);
+        PaymentEntity paymentEntity = mapFromJson(resultStr, PaymentEntity.class);
 
         String paymentId = paymentEntity.getId();
 
@@ -234,7 +230,7 @@ public class PaymentsControllerTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        PaymentEntity paymentEntity = objectMapper.readValue(resultStr, PaymentEntity.class);
+        PaymentEntity paymentEntity = mapFromJson(resultStr, PaymentEntity.class);
 
         String paymentId = paymentEntity.getId();
 
