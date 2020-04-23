@@ -79,12 +79,16 @@ public class PaymentServiceImpl implements PaymentService {
             remainVat = c.getRemainVat();
         }
 
+        // 결제 할 금액이 없으면 종료
         if (remainAmount == 0 && remainVat == 0) return null;
 
         long currentRemainAmount = remainAmount - entity.getAmount();
 
+        // vat를 입력하지 않았을 때
         if(entity.getVat() == -1) {
+            // 남은 금액이 없으면 자동으로 나머지 vat 결제
             if(currentRemainAmount == 0) entity.setVat(remainVat);
+            // 남은 금액이 있으면 (입력 받은 금액 / 11)로 자동 계산
             else entity.setVat( Math.round((double)entity.getAmount() / 11.0));
         }
 

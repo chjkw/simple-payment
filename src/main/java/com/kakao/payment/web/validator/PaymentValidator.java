@@ -1,12 +1,27 @@
-package com.kakao.payment.validator;
+package com.kakao.payment.web.validator;
 
 import com.kakao.payment.model.PaymentModel;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 
 @Component
-public class PaymentValidator {
-    public void validate(PaymentModel paymentModel, Errors errors) {
+public class PaymentValidator implements Validator {
+    @Override
+    public boolean supports(Class<?> aClass) {
+        return PaymentModel.class.equals(aClass);
+    }
+
+    @Override
+    public void validate(Object o, Errors errors) {
+        ValidationUtils.rejectIfEmpty(errors, "cardnum", "cardnum.empty");
+        ValidationUtils.rejectIfEmpty(errors, "exp", "exp.empty");
+        ValidationUtils.rejectIfEmpty(errors, "cvc", "cvc.empty");
+        ValidationUtils.rejectIfEmpty(errors, "plan", "plan.empty");
+        ValidationUtils.rejectIfEmpty(errors, "amount", "amount.empty");
+
+        PaymentModel paymentModel = (PaymentModel) o;
         if(paymentModel.getCardnum().length() < 10) {
             errors.rejectValue("cardnum", "WrongValue", "카드 번호가 너무 짧습니다.");
         }
