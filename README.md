@@ -21,7 +21,7 @@
 | ------ | ----------------------- | --------------- |
 | POST   | /api/v1/payments        | [결재 API](doc/payments.md) |
 | POST   | /api/v1/payments/cancel | [결재취소 API](doc/cancel.md) |
-| GET    | /api/v1/payments        | [데이터 조회 API](doc/detail.md) |
+| GET    | /api/v1/payments/{id}   | [데이터 조회 API](doc/detail.md) |
 
 
 
