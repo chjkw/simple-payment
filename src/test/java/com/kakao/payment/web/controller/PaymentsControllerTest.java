@@ -2,11 +2,11 @@ package com.kakao.payment.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.payment.AbstractTest;
-import com.kakao.payment.helper.TestHelper;
-import com.kakao.payment.service.PaymentService;
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
+import com.kakao.payment.helper.TestHelper;
 import com.kakao.payment.model.PaymentModel;
+import com.kakao.payment.service.PaymentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 
-import java.nio.charset.Charset;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -49,9 +44,19 @@ public class PaymentsControllerTest extends AbstractTest {
                 MockMvcRequestBuilders.post("/api/v1/payments")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(mapToJson(payment)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.plan").value(0))
-                .andExpect(jsonPath("$.amount").value(payment.getAmount()));
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void addPaymentFail() throws  Exception {
+        PaymentModel payment = testHelper.makeSamplePaymentModel();
+        payment.setCardnum("1234567890123456q"); // bad card number
+
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/payments")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(mapToJson(payment)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -69,16 +74,57 @@ public class PaymentsControllerTest extends AbstractTest {
                 .andExpect(jsonPath("$.amount").value(cancelEntity.getAmount()));
     }
 
+
     @Test
-    public void addPaymentFail() throws  Exception {
-        PaymentModel payment = testHelper.makeSamplePaymentModel();
-        payment.setCardnum("1234567890123456q"); // bad card number
+    public void cancelPaymentFail() throws Exception {
+        CancelEntity cancelEntity = testHelper.makeSampleCancelEntity();
 
         mvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/payments")
+                MockMvcRequestBuilders.post("/api/v1/payments/cancel")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(payment)))
+                        .content(mapToJson(cancelEntity)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void getPayment() throws Exception {
+        PaymentModel paymentModel = testHelper.makeSamplePaymentModel();
+        PaymentEntity p = paymentService.addPayment(paymentModel);
+
+        mvc.perform(
+                MockMvcRequestBuilders.get(String.format("/api/v1/payments/%s", p.getId()))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(p.getId()))
+                .andExpect(jsonPath("$.cardnum").value("1234567******456"))
+                .andExpect(jsonPath("$.cvc").value((int)paymentModel.getCvc()))
+                .andExpect(jsonPath("$.exp").value((int)paymentModel.getExp()))
+                .andExpect(jsonPath("$.plan").value((int)paymentModel.getPlan()))
+                .andExpect(jsonPath("$.amount").value(paymentModel.getAmount()))
+                .andExpect(jsonPath("$.vat").value(paymentModel.getVat()))
+                .andExpect(jsonPath("$.payment").value(true));
+    }
+
+    @Test
+    public void getCancel() throws Exception {
+        PaymentModel paymentModel = testHelper.makeSamplePaymentModel();
+        PaymentEntity p = paymentService.addPayment(paymentModel);
+
+        CancelEntity cancelEntity = testHelper.makeSampleCancelEntity(p.getId());
+        CancelEntity c = paymentService.addCancellation(cancelEntity);
+
+        mvc.perform(
+                MockMvcRequestBuilders.get(String.format("/api/v1/payments/%s", c.getId()))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(c.getPaymentId()))
+                .andExpect(jsonPath("$.cardnum").value("1234567******456"))
+                .andExpect(jsonPath("$.cvc").value((int)paymentModel.getCvc()))
+                .andExpect(jsonPath("$.exp").value((int)paymentModel.getExp()))
+                .andExpect(jsonPath("$.plan").value((int)p.getPlan()))
+                .andExpect(jsonPath("$.amount").value(c.getAmount()))
+                .andExpect(jsonPath("$.vat").value(c.getVat()))
+                .andExpect(jsonPath("$.payment").value(false));
     }
 
     @Test
