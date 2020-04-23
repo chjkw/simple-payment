@@ -1,16 +1,18 @@
-package com.kakao.test.payment.service.impl;
+package com.kakao.payment.service.impl;
 
-import com.kakao.test.payment.entity.CancelEntity;
-import com.kakao.test.payment.entity.PaymentEntity;
-import com.kakao.test.payment.entity.TypesEntity;
-import com.kakao.test.payment.model.PaymentModel;
-import com.kakao.test.payment.repository.CancelRepository;
-import com.kakao.test.payment.repository.PaymentRepository;
-import com.kakao.test.payment.repository.TypesRepository;
-import com.kakao.test.payment.service.EncryptionService;
-import com.kakao.test.payment.service.PaymentService;
+import com.kakao.payment.entity.TypesEntity;
+import com.kakao.payment.repository.TypesRepository;
+import com.kakao.payment.service.EncryptionService;
+import com.kakao.payment.entity.CancelEntity;
+import com.kakao.payment.entity.PaymentEntity;
+import com.kakao.payment.model.PaymentModel;
+import com.kakao.payment.repository.CancelRepository;
+import com.kakao.payment.repository.PaymentRepository;
+import com.kakao.payment.service.ApprovalService;
+import com.kakao.payment.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
@@ -26,12 +28,16 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private TypesRepository typesRepository;
 
+    @Autowired
+    private ApprovalService approvalService;
+
     @Override
     public boolean existsById(String id) {
         return typesRepository.existsByUid(id);
     }
 
     @Override
+    @Transactional
     public PaymentEntity addPayment(PaymentModel model) {
         PaymentEntity p = makeEntity(model);
         p = paymentRepository.save(p);
@@ -41,10 +47,14 @@ public class PaymentServiceImpl implements PaymentService {
         t.setPayment(true);
         typesRepository.save(t);
 
+        // 카드사 전달
+        approvalService.saveApprovalStr(p, null);
+
         return p;
     }
 
     @Override
+    @Transactional
     public CancelEntity addCancellation(CancelEntity entity) {
         CancelEntity c = cancelRepository.save(entity);
 
@@ -52,10 +62,14 @@ public class PaymentServiceImpl implements PaymentService {
         t.setUid(c.getId());
         t.setPayment(false);
         typesRepository.save(t);
+
+        // 카드사 전달
+        approvalService.saveApprovalStr(null, c);
         return c;
     }
 
     @Override
+    @Transactional
     public PaymentModel getModelById(String id) {
         TypesEntity t = typesRepository.findByUid(id);
 

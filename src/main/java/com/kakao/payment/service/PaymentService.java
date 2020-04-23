@@ -1,8 +1,8 @@
-package com.kakao.test.payment.service;
+package com.kakao.payment.service;
 
-import com.kakao.test.payment.entity.CancelEntity;
-import com.kakao.test.payment.entity.PaymentEntity;
-import com.kakao.test.payment.model.PaymentModel;
+import com.kakao.payment.entity.CancelEntity;
+import com.kakao.payment.entity.PaymentEntity;
+import com.kakao.payment.model.PaymentModel;
 
 public interface PaymentService {
     PaymentModel getModelById(String id);

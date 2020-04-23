@@ -1,4 +1,4 @@
-package com.kakao.test.payment.model;
+package com.kakao.payment.model;
 
 import lombok.Getter;
 import lombok.Setter;

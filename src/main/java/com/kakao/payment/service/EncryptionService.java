@@ -1,4 +1,4 @@
-package com.kakao.test.payment.service;
+package com.kakao.payment.service;
 
 public interface EncryptionService {
     String encrypt(String s);

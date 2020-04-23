@@ -1,7 +1,9 @@
-package com.kakao.test.payment.entity;
+package com.kakao.payment.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,8 +32,13 @@ public class PaymentEntity {
     @Column(nullable = false)
     private long amount;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @CreationTimestamp
     private LocalDateTime dateTime;
 
     private long vat = -1;
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = LocalDateTime.parse(dateTime);
+    }
 }

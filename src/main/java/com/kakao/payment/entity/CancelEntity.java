@@ -1,8 +1,11 @@
-package com.kakao.test.payment.entity;
+package com.kakao.payment.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +17,7 @@ public class CancelEntity {
     private static final long serialVersionUID = 810457109758530246L;
 
     @Id
+    @Setter
     @Getter
     @Column(length = 20)
     private String id = UUID.randomUUID().toString().replace("-", "").substring(0,20);
@@ -32,6 +36,7 @@ public class CancelEntity {
     @Setter
     private long vat = -1;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @CreationTimestamp
     private LocalDateTime dateTime;
 

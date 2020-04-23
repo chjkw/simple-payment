@@ -1,4 +1,4 @@
-package com.kakao.test.payment.entity;
+package com.kakao.payment.entity;
 
 import lombok.*;
 
