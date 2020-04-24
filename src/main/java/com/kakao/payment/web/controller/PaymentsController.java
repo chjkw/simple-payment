@@ -2,9 +2,7 @@ package com.kakao.payment.web.controller;
 
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
-import com.kakao.payment.model.CancelResponseModel;
 import com.kakao.payment.model.PaymentModel;
-import com.kakao.payment.model.PaymentResponseModel;
 import com.kakao.payment.web.validator.CancelationValidator;
 import com.kakao.payment.web.validator.PaymentValidator;
 import com.kakao.payment.service.PaymentService;
@@ -60,7 +58,10 @@ public class PaymentsController {
         if(errors.hasErrors()) return ResponseEntity.badRequest().body(errors);
 
         PaymentEntity p = paymentService.addPayment(param);
-        PaymentResponseModel m = paymentService.makePaymentResponseModel(p);
+        PaymentModel m = paymentService.makeModel(p);
+        m.setCardnum(param.getCardnum());
+        m.setPayment(true);
+
         return ResponseEntity.ok().body(m);
     }
 
@@ -81,8 +82,6 @@ public class PaymentsController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        CancelResponseModel ret = paymentService.makeCancelResponseModel(c);
-
-        return ResponseEntity.ok().body(ret);
+        return ResponseEntity.ok().body(c);
     }
 }

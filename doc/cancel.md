@@ -34,10 +34,13 @@
 
 ```javascript
 {
-    "id": "185c17b8baed4c279bcb",
-    "dateTime": "2020-04-23T23:55:01",
-    "remainAmount": 0,
-    "remainVat": 0
+    "id": "4123b20b2bcb4fc9892e",
+    "paymentId": "827aaec9b5a04870a26c",
+    "amount": 100000000,
+    "vat": 1000,
+    "dateTime": "2020-04-24T08:37:48",
+    "remainAmount": 900000000,
+    "remainVat": 9000
 }
 ```
 

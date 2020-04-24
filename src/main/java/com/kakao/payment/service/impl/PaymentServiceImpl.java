@@ -1,9 +1,7 @@
 package com.kakao.payment.service.impl;
 
 import com.kakao.payment.entity.TypesEntity;
-import com.kakao.payment.model.CancelResponseModel;
 import com.kakao.payment.model.CardInfoModel;
-import com.kakao.payment.model.PaymentResponseModel;
 import com.kakao.payment.repository.TypesRepository;
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
@@ -147,7 +145,8 @@ public class PaymentServiceImpl implements PaymentService {
         return p;
     }
 
-    private PaymentModel makeModel(PaymentEntity p) {
+    @Override
+    public PaymentModel makeModel(PaymentEntity p) {
         PaymentModel m = new PaymentModel();
 
         CardInfoModel cardInfoModel = new CardInfoModel(p.getCardinfo());
@@ -160,27 +159,10 @@ public class PaymentServiceImpl implements PaymentService {
         m.setAmount(p.getAmount());
         m.setVat(p.getVat());
         m.setDateTime(p.getDateTime());
+        m.setPayment(true);
+
 
         return m;
     }
 
-    @Override
-    public PaymentResponseModel makePaymentResponseModel(PaymentEntity p) {
-        PaymentResponseModel ret = new PaymentResponseModel();
-        ret.setDateTime(p.getDateTime());
-        ret.setId(p.getId());
-
-        return ret;
-    }
-
-    @Override
-    public CancelResponseModel makeCancelResponseModel(CancelEntity c) {
-        CancelResponseModel ret = new CancelResponseModel();
-        ret.setDateTime(c.getDateTime());
-        ret.setId(c.getId());
-        ret.setRemainAmount(c.getRemainAmount());
-        ret.setRemainVat(c.getRemainVat());
-
-        return ret;
-    }
 }

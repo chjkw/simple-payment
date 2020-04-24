@@ -1,5 +1,6 @@
 package com.kakao.payment.web.controller;
 
+import com.jayway.jsonpath.JsonPath;
 import com.kakao.payment.AbstractTest;
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
@@ -42,7 +43,13 @@ public class PaymentsControllerTest extends AbstractTest {
                 .content(mapToJson(payment)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.dateTime").exists());
+                .andExpect(jsonPath("$.cardnum").value(payment.getCardnum()))
+                .andExpect(jsonPath("$.cvc").value((int)payment.getCvc()))
+                .andExpect(jsonPath("$.exp").value((int)payment.getExp()))
+                .andExpect(jsonPath("$.plan").value((int)payment.getPlan()))
+                .andExpect(jsonPath("$.amount").value(payment.getAmount()))
+                .andExpect(jsonPath("$.vat").value(payment.getVat()))
+                .andExpect(jsonPath("$.payment").value(true));
     }
 
     @Test
@@ -149,10 +156,7 @@ public class PaymentsControllerTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        PaymentEntity paymentEntity = mapFromJson(resultStr, PaymentEntity.class);
-
-        String paymentId = paymentEntity.getId();
-
+        String paymentId = JsonPath.read(resultStr, "$.id");
 
         // 테스트 값 생성
         long[] amounts = {1100, 3300, 7000, 6600, 6600, 100};
@@ -195,10 +199,7 @@ public class PaymentsControllerTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        PaymentEntity paymentEntity = mapFromJson(resultStr, PaymentEntity.class);
-
-        String paymentId = paymentEntity.getId();
-
+        String paymentId = JsonPath.read(resultStr, "$.id");
 
         // 테스트 값 생성
         long[] amounts = {10000, 10000, 10000};
@@ -242,10 +243,7 @@ public class PaymentsControllerTest extends AbstractTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        PaymentEntity paymentEntity = mapFromJson(resultStr, PaymentEntity.class);
-
-        String paymentId = paymentEntity.getId();
-
+        String paymentId = JsonPath.read(resultStr, "$.id");
 
         // 테스트 값 생성
         long[] amounts = {10000, 10000, 10000};
