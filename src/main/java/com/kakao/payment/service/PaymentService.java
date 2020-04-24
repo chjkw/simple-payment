@@ -6,12 +6,11 @@ import com.kakao.payment.model.PaymentModel;
 
 
 public interface PaymentService {
-
     boolean existsById(String id);
     PaymentModel getModelById(String id);
 
     PaymentEntity addPayment(PaymentModel model);
     CancelEntity addCancellation(CancelEntity entity);
 
-     PaymentModel makeModel(PaymentEntity p);
+    PaymentModel makeModel(PaymentEntity p);
 }

@@ -2,16 +2,19 @@ package com.kakao.payment.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
 @Table(name = "cancels")
-public class CancelEntity {
+public class CancelEntity implements Serializable {
     private static final long serialVersionUID = 810457109758530246L;
 
     @Id
@@ -46,7 +49,4 @@ public class CancelEntity {
     @Getter
     @Setter
     private long remainVat;
-
-    public CancelEntity() {
-    }
 }

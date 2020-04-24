@@ -8,8 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "approvals")
 public class ApprovalEntity {
-    private static final long serialVersionUID = 810457109758556241L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

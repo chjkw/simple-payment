@@ -7,7 +7,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
-public class CancelationValidator implements Validator {
+public class CancellationValidator implements Validator {
     @Override
     public boolean supports(Class<?> aClass) {
         return CancelEntity.class.equals(aClass);

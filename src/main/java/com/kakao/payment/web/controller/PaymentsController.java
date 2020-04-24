@@ -3,7 +3,7 @@ package com.kakao.payment.web.controller;
 import com.kakao.payment.entity.CancelEntity;
 import com.kakao.payment.entity.PaymentEntity;
 import com.kakao.payment.model.PaymentModel;
-import com.kakao.payment.web.validator.CancelationValidator;
+import com.kakao.payment.web.validator.CancellationValidator;
 import com.kakao.payment.web.validator.PaymentValidator;
 import com.kakao.payment.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class PaymentsController {
     private PaymentValidator paymentValidator;
 
     @Autowired
-    private CancelationValidator cancelationValidator;
+    private CancellationValidator cancellationValidator;
 
     /**
      * View specific payment by id
@@ -73,7 +73,7 @@ public class PaymentsController {
      */
     @PostMapping(value = "/api/v1/payments/cancel", produces = "application/json;charset=utf-8")
     public ResponseEntity cancelPayment(@RequestBody @Valid CancelEntity param, Errors errors) {
-        cancelationValidator.validate(param, errors);
+        cancellationValidator.validate(param, errors);
         if(errors.hasErrors()) return ResponseEntity.badRequest().body(errors);
 
         CancelEntity c = paymentService.addCancellation(param);

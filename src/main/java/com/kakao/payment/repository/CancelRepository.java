@@ -5,6 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface CancelRepository extends CrudRepository<CancelEntity, String> {
     boolean existsByPaymentId(String paymentId);
-
     CancelEntity findFirstByPaymentIdOrderByDateTimeDesc(String paymentId);
 }

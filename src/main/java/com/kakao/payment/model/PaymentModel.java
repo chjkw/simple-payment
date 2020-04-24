@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PaymentModel implements Serializable {
+    private static final long serialVersionUID = 8104571097585302603L;
+
     private String id;
     private String cardnum;
     private short cvc;
