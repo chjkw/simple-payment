@@ -53,4 +53,14 @@
 ```
 
 ### Errors Example
-`400 BadRequest`
+`404 NotFound`
+
+```javascript
+{
+    "timestamp": "2020-04-24T00:54:19.259+0000",
+    "status": 404,
+    "error": "Not Found",
+    "message": "No message available",
+    "path": "/api/v1/pa/39dda37b6f7440ca9b2f"
+}
+```
